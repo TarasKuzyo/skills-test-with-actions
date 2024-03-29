@@ -54,3 +54,14 @@ jobs:
             echo "backend_image_tag=${{ inputs.deployment-image-tag || 'latest' }}" >> $GITHUB_OUTPUT
             echo "publish_image=${{ inputs.publish-docker-image || true }}" >> $GITHUB_OUTPUT
             echo "image-tag=$(python -c 'import app; print(app.__version__)')" >> $GITHUB_OUTPUT
+  test-vars:
+    runs-on: ubuntu-latest
+    needs: define-environment
+    steps:
+        - name: Echo Vars
+          run: |
+            echo ${{needs.define-environment.outputs.environment}}
+            echo ${{needs.define-environment.outputs.deploy-on-instance}}
+            echo ${{needs.define-environment.outputs.deployment-image-tag}}
+            echo ${{needs.define-environment.outputs.publish-docker-image}}
+            echo ${{needs.define-environment.outputs.image-tag}}
