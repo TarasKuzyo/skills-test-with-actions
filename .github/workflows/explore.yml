@@ -50,14 +50,14 @@ jobs:
           id: set-params
           run: |
             echo "environment=${{ inputs.environment || 'development' }}" >> $GITHUB_OUTPUT
-            echo "deploy-on-instance=${{ inputs.deploy-on-instance || true }}" >> $GITHUB_OUTPUT
+            echo "deploy-on-instance=${{ inputs.deploy-on-instance || 'true' }}" >> $GITHUB_OUTPUT
             echo "deployment-image-tag=${{ inputs.deployment-image-tag || 'latest' }}" >> $GITHUB_OUTPUT
-            echo "publish-docker-image=${{ inputs.publish-docker-image || true }}" >> $GITHUB_OUTPUT
+            echo "publish-docker-image=${{ inputs.publish-docker-image || 'false' }}" >> $GITHUB_OUTPUT
             echo "publish-image-tag=$(python -c 'import app; print(app.__version__)')" >> $GITHUB_OUTPUT
   test-vars:
     runs-on: ubuntu-latest
     needs: define-environment
-    if: ${{needs.define-environment.outputs.publish-docker-image}} == 'true'
+    if: needs.define-environment.outputs.publish-docker-image == 'true'
     steps:
         - name: Echo Vars
           run: |
