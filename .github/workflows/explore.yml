@@ -50,7 +50,7 @@ jobs:
           id: set-params
           run: |
             echo "deployment_environment=${{ inputs.environment || 'development' }}" >> $GITHUB_OUTPUT
-            echo "deploy_instance=${{ inputs.deploy-on-instance || 'true' }}" >> $GITHUB_OUTPUT"
-            echo "backend_image_tag=${{ inputs.deployment-image-tag || 'latest'}}" >> $GITHUB_OUTPUT
-            echo "publish_image=${{ inputs.publish-docker-image || true}}" >> $GITHUB_OUTPUT
-            echo "image-tag=$(python -c 'import app; print(app.__version__)'')" >> $GITHUB_OUTPUT
+            echo "deploy_instance=${{ inputs.deploy-on-instance || true }}" >> $GITHUB_OUTPUT"
+            echo "backend_image_tag=${{ inputs.deployment-image-tag || 'latest' }}" >> $GITHUB_OUTPUT
+            echo "publish_image=${{ inputs.publish-docker-image || true }}" >> $GITHUB_OUTPUT
+            echo "image-tag=$(python -c 'import app; print(app.__version__)')" >> $GITHUB_OUTPUT
