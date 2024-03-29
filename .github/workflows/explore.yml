@@ -68,9 +68,9 @@ jobs:
             echo ${{needs.define-environment.outputs.publish-image-tag}}
 
         - name: Check true
-          if: ${{needs.define-environment.outputs.publish-docker-image}} == 'true'
+          if: needs.define-environment.outputs.publish-docker-image== 'true'
           run: echo ${{needs.define-environment.outputs.publish-docker-image}}
 
         - name: Check false
-          if: ${{needs.define-environment.outputs.publish-docker-image}} == 'false'
+          if: needs.define-environment.outputs.publish-docker-image == 'false'
           run: echo ${{needs.define-environment.outputs.publish-docker-image}}
