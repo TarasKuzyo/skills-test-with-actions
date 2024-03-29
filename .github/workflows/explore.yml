@@ -49,10 +49,10 @@ jobs:
           working-directory: ./backend
           id: set-params
           run: |
-            echo "deployment_environment=${{ inputs.environment || 'development' }}" >> $GITHUB_OUTPUT
-            echo "deploy_instance=${{ inputs.deploy-on-instance || true }}" >> $GITHUB_OUTPUT
-            echo "backend_image_tag=${{ inputs.deployment-image-tag || 'latest' }}" >> $GITHUB_OUTPUT
-            echo "publish_image=${{ inputs.publish-docker-image || true }}" >> $GITHUB_OUTPUT
+            echo "environment=${{ inputs.environment || 'development' }}" >> $GITHUB_OUTPUT
+            echo "deploy-on-instance=${{ inputs.deploy-on-instance || true }}" >> $GITHUB_OUTPUT
+            echo "deployment-image-tag=${{ inputs.deployment-image-tag || 'latest' }}" >> $GITHUB_OUTPUT
+            echo "publish-docker-image=${{ inputs.publish-docker-image || true }}" >> $GITHUB_OUTPUT
             echo "image-tag=$(python -c 'import app; print(app.__version__)')" >> $GITHUB_OUTPUT
   test-vars:
     runs-on: ubuntu-latest
