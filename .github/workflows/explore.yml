@@ -57,6 +57,7 @@ jobs:
   test-vars:
     runs-on: ubuntu-latest
     needs: define-environment
+    if: ${{needs.define-environment.outputs.publish-docker-image}} == 'true'
     steps:
         - name: Echo Vars
           run: |
@@ -64,4 +65,4 @@ jobs:
             echo ${{needs.define-environment.outputs.deploy-on-instance}}
             echo ${{needs.define-environment.outputs.deployment-image-tag}}
             echo ${{needs.define-environment.outputs.publish-docker-image}}
-            echo ${{needs.define-environment.outputs.image-tag}}
+            echo ${{needs.define-environment.outputs.publish-image-tag}}
