@@ -78,7 +78,7 @@ jobs:
   final:
     runs-on: ubuntu-latest
     needs: [define-environment, test-vars]
-    if: always() && needs.define-environment.outputs.deploy-on-instance == 'true'
+    if: !failure() && needs.define-environment.outputs.deploy-on-instance == 'true'
     steps:
         - name: echo
           run: echo 'deploy on instance'
