@@ -30,38 +30,27 @@ on:
           required: true
           description: indicates if the workflow should build and push the Docker image to the container registry
 
+  push:
+    branches: [ main ]
+
+
 jobs:
   define-environment:
     runs-on: ubuntu-latest
     outputs:
-      deployment_environment: ${{ steps.setup-inputs.outputs.deployment_environment }}
-      deploy_instance: ${{ steps.setup-inputs.outputs.deploy_instance }}
-      backend_image_tag: ${{ steps.setup-inputs.outputs.backend_image_tag }}
-      publish_image: ${{ steps.setup-inputs.outputs.publish_image }}
-      image_tag: ${{ steps.get-tag.outputs.image_tag }}
+      environment: ${{ steps.set-params.outputs.environment }}
+      deploy-on-instance: ${{ steps.set-params.outputs.deploy-on-instance }}
+      deployment-image-tag: ${{ steps.set-params.outputs.deployment-image-tag }}
+      publish-docker-image: ${{ steps.set-params.outputs.publish-docker-image }}
+      image-tag: ${{ steps.set-params.outputs.image-tag }}
     steps:
         - uses: actions/checkout@v4
         - name: Set workflow parameters
-          id: setup-inputs
-          run: |
-            if [ "${{ github.event_name }}" == 'workflow_dispatch' ]; then
-                deployment_environment=${{ inputs.environment }}
-                deploy_instance=${{ inputs.deploy-on-instance }}
-                backend_image_tag=${{ inputs.deployment-image-tag }}
-                publish_image=${{ inputs.publish-docker-image }}
-            else
-                deployment_environment='development'
-                deploy_instance='true'
-                backend_image_tag='latest'
-                publish_image=true
-            fi
-            echo "deployment_environment=${deployment_environment}" >> "$GITHUB_OUTPUT"
-            echo "deploy_instance=${deploy_instance}" >> "$GITHUB_OUTPUT"
-            echo "backend_image_tag=${backend_image_tag}" >> "$GITHUB_OUTPUT"
-            echo "publish_image=${publish_image}" >> "$GITHUB_OUTPUT"
-        - name: Get Docker Image tag
           working-directory: ./backend
-          id: get-tag
+          id: set-params
           run: |
-            tag=$(python -c "import app; print(app.__version__)")
-            echo "image_tag=${tag}" >> "$GITHUB_OUTPUT"
+            echo "deployment_environment=${{ inputs.environment || 'development' }}" >> $GITHUB_OUTPUT
+            echo "deploy_instance=${{ inputs.deploy-on-instance || 'true' }}" >> $GITHUB_OUTPUT"
+            echo "backend_image_tag=${{ inputs.deployment-image-tag || 'latest'}}" >> $GITHUB_OUTPUT
+            echo "publish_image=${{ inputs.publish-docker-image || true}}" >> $GITHUB_OUTPUT
+            echo "image-tag=$(python -c 'import app; print(app.__version__)'')" >> $GITHUB_OUTPUT
