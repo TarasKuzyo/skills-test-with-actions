@@ -33,8 +33,16 @@ jobs:
       - name: env file
         run: cat .env
 
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo "${{ toJson(vars) }}" | jq -r 'keys[] as $k | "\($k)=\(.[$k])"' >> .env2
+
+      - name: env file
+        run: cat .env2
+
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
+
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
